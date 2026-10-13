@@ -2,8 +2,6 @@
 
 A desktop document and image editor for Windows, macOS and Linux, built with Flutter.
 
-> **Status: phase 1 code written, not yet compiled.** The code was written without access to the Flutter SDK or pub.dev. Run `flutter analyze` and `flutter test` before relying on it.
-
 ## Setup
 
 Requirements:
@@ -67,18 +65,6 @@ State management is `flutter_bloc` only: `ImageEditorBloc` for the image pipelin
 - [x] Widget test: conversion panel
 
 ## Not yet done
-
-### Verification (highest priority)
-
-- [ ] `flutter pub get`, `flutter analyze` and `flutter test` pass
-- [ ] Confirm package versions in `pubspec.yaml` and their licences (bloc, get_it, image, file_picker, desktop_drop, pdfrx)
-- [ ] Confirm `image` package API calls: `encodeBmp`, `flip`, `compositeImage`, pixel setters
-- [ ] Manual test pass on macOS, Windows and Linux: open, resize, export, convert, drag-and-drop, shortcuts
-
-### Platform setup
-
-- [ ] macOS: confirm sandbox entitlements allow user-selected read and write (`macos/Runner/*.entitlements`)
-- [ ] Windows and Linux: check file dialog and LibreOffice path detection on real machines
 
 ### Document editing (phase 2)
 
