@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.desk.nodz" "\0"
-            VALUE "FileDescription", "desk" "\0"
+            VALUE "FileDescription", "Docsy" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "desk" "\0"
+            VALUE "InternalName", "Docsy" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.desk.nodz. All rights reserved." "\0"
-            VALUE "OriginalFilename", "desk.exe" "\0"
-            VALUE "ProductName", "desk" "\0"
+            VALUE "OriginalFilename", "docsy.exe" "\0"
+            VALUE "ProductName", "Docsy" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

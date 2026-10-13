@@ -1,30 +1,69 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:bloc_test/bloc_test.dart';
+import 'package:docsy/domain/usecases/convert_document_usecase.dart';
+import 'package:docsy/presentation/conversion/conversion_cubit.dart';
+import 'package:docsy/presentation/conversion/conversion_panel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'package:desk/main.dart';
+class _MockConvert extends Mock implements ConvertDocumentUseCase {}
+
+class _MockConversionCubit extends MockCubit<ConversionState>
+    implements ConversionCubit {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('conversion panel offers PDF conversion for Word files', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BlocProvider(
+          create: (_) => ConversionCubit(convert: _MockConvert()),
+          child: ConversionPanel(
+            fileName: 'report.docx',
+            onConvert: () {},
+            onOpenResult: (_) {},
+          ),
+        ),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('report.docx'), findsOneWidget);
+    expect(find.text('Convert to PDF…'), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('conversion panel shows the failure message from the cubit', (
+    tester,
+  ) async {
+    final cubit = _MockConversionCubit();
+    whenListen(
+      cubit,
+      Stream.value(
+        const ConversionState(
+          status: ConversionStatus.failure,
+          message: 'LibreOffice was not found.',
+        ),
+      ),
+      initialState: const ConversionState(
+        status: ConversionStatus.failure,
+        message: 'LibreOffice was not found.',
+      ),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: BlocProvider<ConversionCubit>.value(
+          value: cubit,
+          child: ConversionPanel(
+            fileName: 'broken.doc',
+            onConvert: () {},
+            onOpenResult: (_) {},
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('LibreOffice was not found.'), findsOneWidget);
   });
 }
